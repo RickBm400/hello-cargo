@@ -1,35 +1,29 @@
-use rand::prelude::*;
-use std::cmp::Ordering;
-use std::io::stdin; // standard library std
-
+use std::io;
+use std::process;
 fn main() {
-    let secret_number = rand::rng().random_range(1..=100);
 
-    println!("the secret number is {secret_number}");
+    clean_command();
 
-    println!("guess the number");
+    let a = [1, 2, 3, 4, 5, 6];
 
-    loop {
-        println!("please input your guest");
+    println!("Please enter an array index.");
+    
+    let mut index = String::new();
 
-        let mut guess = String::new();
+    io::stdin()
+        .read_line(&mut index)
+        .expect("Failed to read line");
 
-        stdin().read_line(&mut guess).expect("Fail to read message"); // the & indicates that the string is being used as a reference 
+    let index: usize = index
+        .trim()
+        .parse()
+        .expect("Index entered was not a number");
 
-        let guess: u32 = match guess.trim().parse() {
-            Ok(num) => num,
-            Err(_) => continue,
-        };
+    let element = a[index];
 
-        println!("Your guess is {guess}");
+    println!("The value of the element at index {index} is: {element}");
+}
 
-        match guess.cmp(&secret_number) {
-            Ordering::Less => println!("Too Small"),
-            Ordering::Greater => println!("Too Big"),
-            Ordering::Equal => {
-                println!("You Win");
-                break;
-            }
-        }
-    }
+fn clean_command() {
+    let _ = process::Command::new("clear").status();
 }
